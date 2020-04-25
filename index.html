@@ -300,6 +300,8 @@
             }, [_('text', val)]));
             classList.value = val;
           }
+
+          document.getElementById('loadSkeleton').click();
         })
         if (location.hash.substr(1)) {
           skeletonList.value = location.hash.substr(1);
@@ -599,7 +601,12 @@ console.log("Event on track " + track.trackIndex + ": " + JSON.stringify(event))
         var skeleton = window.skeleton.skeleton;
         var state = window.skeleton.state;
         var activeAnimation = state.tracks[0].animation.name;
-        [['闲置', 'idle'], ['准备', 'standBy'], ['走', 'walk'], ['跑', 'run'], ['跑（入场）', 'run_gamestart'], ['落地', 'landing'], ['攻击', 'attack'], ['攻击（扫荡）', 'attack_skipQuest'], ['庆祝-短', 'joy_short,hold,joy_short_return'], ['庆祝-长', 'joy_long,hold,joy_long_return'], ['受伤', 'damage'], ['死亡', 'die,stop'], ['合作-准备', 'multi_standBy'], ['合作-闲置', 'multi_idle_standBy'], ['合作-闲置（无武器）', 'multi_idle_noWeapon']].forEach(function (i) {
+        [['闲置', 'idle'], ['准备', 'standBy'], ['走', 'walk'], ['跑', 'run'], ['跑（入场）', 'run_gamestart'],
+         ['落地', 'landing'], ['攻击', 'attack'], ['攻击（扫荡）', 'attack_skipQuest'],
+         ['庆祝-短', 'joy_short,hold,joy_short_return'], ['庆祝-长', 'joy_long,hold,joy_long_return'],
+         ['受伤', 'damage'], ['死亡', 'die,stop'], ['合作-准备', 'multi_standBy'],
+         ['合作-闲置', 'multi_idle_standBy'], ['合作-闲置（无武器）', 'multi_idle_noWeapon']
+         ].forEach(function (i) {
           animationList[0].appendChild(_('option', {
             value: i[1]
           }, [_('text', i[0])]));
