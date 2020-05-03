@@ -151,13 +151,39 @@
     </div>
   </center>
   <canvas id="canvas" width="0" height="0"></canvas>
+
+
   <div style="color:#FFF;position:fixed;bottom:0;left:0;right:0;text-align:center">
     Fan-made animation player. Resources copyright &copy;<a href="https://priconne-redive.jp/" target="_blank"
       style="color:#FFF">Cygames</a>
-    2018
+    2018 <a id="h">点此进行下载</a>
   </div>
   <script>
+    var downloadBlob, downloadURL;
 
+    downloadBlob = function(data, fileName, mimeType) {
+      var blob, url;
+      blob = new Blob([data]
+      //, {
+      //  type: mimeType
+      //}
+      );
+      url = window.URL.createObjectURL(blob);
+      downloadURL(url, fileName);
+      setTimeout(function() {
+        return window.URL.revokeObjectURL(url);
+      }, 1000);
+    };
+
+    downloadURL = function(url, fileName) {
+      var a = document.getElementById("h");
+      a.href = url;
+      a.download = fileName;
+      //document.body.appendChild(a);
+      //a.style = 'display: none';
+      a.click();
+      //a.remove();
+    };
     var lastFrameTime = Date.now() / 1000;
     var canvas;
     var shader;
@@ -515,12 +541,14 @@
 
             var skeletonBinary = new spine.SkeletonBinary(atlasLoader);
             var skeletonData = skeletonBinary.readSkeletonData(newBuff.buffer);
+            downloadBlob(newBuff.buffer, 'some-file.skel', 'application/octet-stream');
             var skeleton = new spine.Skeleton(skeletonData);
             skeleton.setSkinByName('default');
             var bounds = calculateBounds(skeleton);
 
             animationStateData = new spine.AnimationStateData(skeleton.data);
             var animationState = new spine.AnimationState(animationStateData);
+            console.log(getClass(currentClass) + '_idle');
             animationState.setAnimation(0, getClass(currentClass) + '_idle', true);
             animationState.addListener({
               /*start: function (track) {
