@@ -159,7 +159,7 @@
   <div style="color:#FFF;position:fixed;bottom:0;left:0;right:0;text-align:center">
     Fan-made animation player. Resources copyright &copy;<a href="https://priconne-redive.jp/" target="_blank"
       style="color:#FFF">Cygames</a>
-    2018 <a id="h">点此进行下载</a>
+    2018 <a id="downloadCurrentSkel">下载当前 skel 模型</a><a id="downloadAllSkel">下载所有 skel 模型</a>
   </div>
   <script>
     var downloadBlob, downloadURL;
@@ -179,7 +179,7 @@
     };
 
     downloadURL = function (url, fileName) {
-      var a = document.getElementById("h");
+      var a = document.getElementById("downloadCurrentSkel");
       a.href = url;
       a.download = fileName;
       //document.body.appendChild(a);
