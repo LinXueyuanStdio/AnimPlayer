@@ -1,82 +1,79 @@
 <!DOCTYPE HTML>
 <html>
+<meta charset="UTF-8" name="viewport" content="width=device-width,user-scalable=no">
+<title>公主连接 spine动画预览页</title>
+<script src="spine-webgl.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
 
-<head>
-  <meta charset="UTF-8" name="viewport" content="width=device-width,user-scalable=no">
-  <!-- import CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-  <title>公主连接 spine动画预览页</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
+  body,
+  html {
+    height: 100%;
+    background: #444;
+    -webkit-text-size-adjust: 100%;
+    font-family: Arial, Meiryo
+  }
+
+  select,
+  option {
+    font-family: Arial, Meiryo
+  }
+
+  /*body {height:101vh}*/
+  canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  .tool {
+    color: #fff;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+    cursor: default
+  }
+
+  .tool>span {
+    white-space: nowrap
+  }
+
+  .img-progress {
+    position: fixed;
+    left: 0;
+    top: -1px;
+    height: 1px;
+    opacity: 1;
+    background: #40b5ff;
+    border: solid #22648d;
+    border-width: 2px 0;
+    transition: width .3s, opacity 1s cubic-bezier(.76, 0, .86, .06)
+  }
+
+  .img-progress:after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 1px;
+    width: 1px;
+    box-shadow: -2px -2px 3px 5px #40b5ff;
+  }
+
+  @media screen and (orientation: portrait) {
+
+    html,
+    body {
+      overflow-x: hidden;
+      width: 100vw
     }
-
-    body,
-    html {
-      height: 100%;
-      background: #444;
-      -webkit-text-size-adjust: 100%;
-      font-family: Arial, Meiryo
-    }
-
-    select,
-    option {
-      font-family: Arial, Meiryo
-    }
-
-    /*body {height:101vh}*/
-    canvas {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-    }
-
-    .tool {
-      color: #fff;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1;
-      cursor: default
-    }
-
-    .tool>span {
-      white-space: nowrap
-    }
-
-    .img-progress {
-      position: fixed;
-      left: 0;
-      top: -1px;
-      height: 1px;
-      opacity: 1;
-      background: #40b5ff;
-      border: solid #22648d;
-      border-width: 2px 0;
-      transition: width .3s, opacity 1s cubic-bezier(.76, 0, .86, .06)
-    }
-
-    .img-progress:after {
-      content: "";
-      position: absolute;
-      right: 0;
-      top: 0;
-      height: 1px;
-      width: 1px;
-      box-shadow: -2px -2px 3px 5px #40b5ff;
-    }
-
-    @media screen and (orientation: portrait) {
-
-      html,
-      body {
-        overflow-x: hidden;
-        width: 100vw
-      }
-    }
-  </style>
-</head>
+  }
+</style>
 
 <body>
   <center>
@@ -154,47 +151,31 @@
     </div>
   </center>
   <canvas id="canvas" width="0" height="0"></canvas>
-  <div id="app">
-    <el-button @click="visible = true">Button</el-button>
-    <el-dialog :visible.sync="visible" title="Hello world">
-      <p>Try Element</p>
-    </el-dialog>
-  </div>
+
+
   <div style="color:#FFF;position:fixed;bottom:0;left:0;right:0;text-align:center">
     Fan-made animation player. Resources copyright &copy;<a href="https://priconne-redive.jp/" target="_blank"
       style="color:#FFF">Cygames</a>
     2018 <a id="h">点此进行下载</a>
   </div>
-  <script src="spine-webgl.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-  <script src="https://unpkg.com/vue/dist/vue.js"></script>
-  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-  <script>
-    new Vue({
-      el: '#app',
-      data: function() {
-        return { visible: false }
-      }
-    })
-  </script>
   <script>
     var downloadBlob, downloadURL;
 
-    downloadBlob = function (data, fileName, mimeType) {
+    downloadBlob = function(data, fileName, mimeType) {
       var blob, url;
       blob = new Blob([data]
-        //, {
-        //  type: mimeType
-        //}
+      //, {
+      //  type: mimeType
+      //}
       );
       url = window.URL.createObjectURL(blob);
       downloadURL(url, fileName);
-      setTimeout(function () {
+      setTimeout(function() {
         return window.URL.revokeObjectURL(url);
       }, 1000);
     };
 
-    downloadURL = function (url, fileName) {
+    downloadURL = function(url, fileName) {
       var a = document.getElementById("h");
       a.href = url;
       a.download = fileName;
@@ -649,11 +630,11 @@ console.log("Event on track " + track.trackIndex + ": " + JSON.stringify(event))
         var state = window.skeleton.state;
         var activeAnimation = state.tracks[0].animation.name;
         [['闲置', 'idle'], ['准备', 'standBy'], ['走', 'walk'], ['跑', 'run'], ['跑（入场）', 'run_gamestart'],
-        ['落地', 'landing'], ['攻击', 'attack'], ['攻击（扫荡）', 'attack_skipQuest'],
-        ['庆祝-短', 'joy_short,hold,joy_short_return'], ['庆祝-长', 'joy_long,hold,joy_long_return'],
-        ['受伤', 'damage'], ['死亡', 'die,stop'], ['合作-准备', 'multi_standBy'],
-        ['合作-闲置', 'multi_idle_standBy'], ['合作-闲置（无武器）', 'multi_idle_noWeapon']
-        ].forEach(function (i) {
+         ['落地', 'landing'], ['攻击', 'attack'], ['攻击（扫荡）', 'attack_skipQuest'],
+         ['庆祝-短', 'joy_short,hold,joy_short_return'], ['庆祝-长', 'joy_long,hold,joy_long_return'],
+         ['受伤', 'damage'], ['死亡', 'die,stop'], ['合作-准备', 'multi_standBy'],
+         ['合作-闲置', 'multi_idle_standBy'], ['合作-闲置（无武器）', 'multi_idle_noWeapon']
+         ].forEach(function (i) {
           animationList[0].appendChild(_('option', {
             value: i[1]
           }, [_('text', i[0])]));
