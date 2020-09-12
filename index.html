@@ -118,6 +118,7 @@
           <option value="0" disabled>*特殊职介*</option>
         </select>
         <input id="loadSkeleton" type="button" value="加载">
+        <input id="downloadCurrentSkel" type="button" value="下载为 skel">
       </span>
       <span>
         <span>动画:</span>
@@ -159,34 +160,19 @@
   <div style="color:#FFF;position:fixed;bottom:0;left:0;right:0;text-align:center">
     Fan-made animation player. Resources copyright &copy;<a href="https://priconne-redive.jp/" target="_blank"
       style="color:#FFF">Cygames</a>
-    2018 <a id="downloadCurrentSkel">下载当前 skel 模型</a><a id="downloadAllSkel">下载所有 skel 模型</a>
+    2018 <a id="downloadProxy"></a>
   </div>
   <script>
-    var downloadBlob, downloadURL;
-
-    downloadBlob = function (data, fileName, mimeType) {
+    function setupDownloadBlob(data, fileName) {
       var blob, url;
-      blob = new Blob([data]
-        //, {
-        //  type: mimeType
-        //}
-      );
+      blob = new Blob([data]);//'application/octet-stream'
       url = window.URL.createObjectURL(blob);
-      downloadURL(url, fileName);
-      setTimeout(function () {
-        return window.URL.revokeObjectURL(url);
-      }, 1000);
-    };
 
-    downloadURL = function (url, fileName) {
-      var a = document.getElementById("downloadCurrentSkel");
+      var a = document.getElementById("downloadProxy");
       a.href = url;
       a.download = fileName;
-      //document.body.appendChild(a);
-      //a.style = 'display: none';
-      a.click();
-      //a.remove();
     };
+
     var lastFrameTime = Date.now() / 1000;
     var canvas;
     var shader;
@@ -338,6 +324,9 @@
           document.getElementById('loadSkeleton').click();
         }
       }, 'json');
+      document.getElementById("downloadCurrentSkel").addEventListener("click", function () {
+        document.getElementById("downloadProxy").click();
+      })
       document.getElementById('loadSkeleton').addEventListener('click', function () {
         if (!skeletonList.value || !classList.value)
           return;
@@ -544,7 +533,8 @@
 
             var skeletonBinary = new spine.SkeletonBinary(atlasLoader);
             var skeletonData = skeletonBinary.readSkeletonData(newBuff.buffer);
-            downloadBlob(newBuff.buffer, 'some-file.skel', 'application/octet-stream');
+            currentSkelData = newBuff.buffer;
+            setupDownloadBlob(newBuff.buffer, 'some-file.skel');
             var skeleton = new spine.Skeleton(skeletonData);
             skeleton.setSkinByName('default');
             var bounds = calculateBounds(skeleton);
