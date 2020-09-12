@@ -1,4 +1,4 @@
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 from pprint import pprint
 import json
 import os
@@ -6,7 +6,9 @@ baseUrl = "https://redive.estertion.win/spine/"
 
 
 def get(url):
-    return urlopen(baseUrl + url)
+    headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:23.0) Gecko/20100101 Firefox/23.0'}
+    req = Request(url=baseUrl + url, headers=headers)
+    return urlopen(req)
 
 
 def download(filename, url):
